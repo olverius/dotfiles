@@ -10,7 +10,7 @@
 
     "modules-left": ["hyprland/workspaces"],
     "modules-center": ["clock"],
-    "modules-right": ["tray", "bluetooth", "network", "pulseaudio", "battery"],
+    "modules-right": ["tray", "bluetooth", "pulseaudio", "battery"],
 
     "hyprland/workspaces": {
         "format": "{id}"
