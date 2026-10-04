@@ -10,7 +10,7 @@
 
     "modules-left": ["hyprland/workspaces"],
     "modules-center": ["clock"],
-    "modules-right": ["tray", "pulseaudio", "battery"],
+    "modules-right": ["tray","backlight", "backlight/slider", "pulseaudio", "battery"],
 
     "hyprland/workspaces": {
         "format": "{id}"
@@ -20,6 +20,19 @@
         "format": "{:%H:%M}",
         "format-alt": "{:%a %d %b  %H:%M}",
         "tooltip-format": "<tt>{calendar}</tt>"
+    },
+    "backlight": {
+        "format": "{icon}",
+        "format-icons": ["󰃞", "󰃟", "󰃠"],
+        "tooltip-format": "Brightness {percent}%",
+        "on-scroll-up": "brightnessctl set 5%+",
+        "on-scroll-down": "brightnessctl set 5%-"
+    },
+
+    "backlight/slider": {
+        "min": 1,
+        "max": 100,
+        "orientation": "horizontal"
     },
 
     "bluetooth": {
