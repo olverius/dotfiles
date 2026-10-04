@@ -10,7 +10,7 @@
 
     "modules-left": ["hyprland/workspaces"],
     "modules-center": ["clock"],
-    "modules-right": ["tray", "network", "pulseaudio", "battery"],
+    "modules-right": ["tray", "bluetooth", "network", "pulseaudio", "battery"],
 
     "hyprland/workspaces": {
         "format": "{id}"
@@ -20,6 +20,17 @@
         "format": "{:%H:%M}",
         "format-alt": "{:%a %d %b  %H:%M}",
         "tooltip-format": "<tt>{calendar}</tt>"
+    },
+
+    "bluetooth": {
+        "format": "󰂯",
+        "format-disabled": "󰂲",
+        "format-off": "󰂲",
+        "format-connected": "󰂱  {device_alias}",
+        "tooltip-format": "{controller_alias}  {status}",
+        "tooltip-format-connected": "{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}",
+        "on-click": "blueman-manager"
     },
 
     "network": {

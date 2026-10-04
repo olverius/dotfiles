@@ -44,6 +44,7 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("hypridle")
     hl.exec_cmd("nm-applet")
     hl.exec_cmd("systemctl --user start hyprpolkitagent")
+    hl.exec_cmd("blueman-applet")
 end)
 
 
