@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Usage: webapp-install "Name" https://url [icon-name]
+# Icons come from the dashboard-icons set, e.g. youtube, x, github, whatsapp
+name="$1"; url="$2"; icon_name="$3"
+apps="$HOME/.local/share/applications"
+icons="$apps/icons"
+mkdir -p "$icons"
+
+icon="applications-internet"
+if [ -n "$icon_name" ]; then
+    if curl -fsSL "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/$icon_name.png" -o "$icons/$name.png"; then
+        icon="$icons/$name.png"
+    fi
+fi
+
+cat > "$apps/$name.desktop" <<EOF
+[Desktop Entry]
+Name=$name
+Exec=chromium --new-window --ozone-platform=wayland "--app=$url"
+Icon=$icon
+Type=Application
+StartupNotify=true
+EOF
+
+echo "Created web app: $name"
