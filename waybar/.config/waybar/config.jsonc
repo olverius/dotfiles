@@ -1,0 +1,51 @@
+// Waybar — minimal, Gruvbox Material
+{
+    "layer": "top",
+    "position": "top",
+    "height": 30,
+    "margin-top": 6,
+    "margin-left": 8,
+    "margin-right": 8,
+    "spacing": 4,
+
+    "modules-left": ["hyprland/workspaces"],
+    "modules-center": ["clock"],
+    "modules-right": ["tray", "network", "pulseaudio", "battery"],
+
+    "hyprland/workspaces": {
+        "format": "{id}"
+    },
+
+    "clock": {
+        "format": "{:%H:%M}",
+        "format-alt": "{:%a %d %b  %H:%M}",
+        "tooltip-format": "<tt>{calendar}</tt>"
+    },
+
+    "network": {
+        "format-wifi": "{essid}",
+        "format-ethernet": "wired",
+        "format-disconnected": "offline",
+        "tooltip-format-wifi": "{essid}  {signalStrength}%\n{ipaddr}",
+        "on-click": "kitty -e nmtui"
+    },
+
+    "pulseaudio": {
+        "format": "vol {volume}%",
+        "format-muted": "muted",
+        "on-click": "pavucontrol",
+        "scroll-step": 5
+    },
+
+    "battery": {
+        "states": { "warning": 25, "critical": 10 },
+        "format": "bat {capacity}%",
+        "format-charging": "chg {capacity}%",
+        "format-plugged": "ac {capacity}%",
+        "tooltip-format": "{timeTo}"
+    },
+
+    "tray": {
+        "spacing": 8
+    }
+}

@@ -1,0 +1,73 @@
+/* Waybar — Gruvbox Material, minimal */
+
+* {
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    font-size: 13px;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+}
+
+window#waybar {
+    background: rgba(40, 40, 40, 0.88);   /* #282828 */
+    color: #d4be98;                        /* beige */
+    border-radius: 6px;
+}
+
+tooltip {
+    background: #282828;
+    border: 1px solid #3c3836;
+    border-radius: 6px;
+}
+
+tooltip label {
+    color: #d4be98;
+}
+
+/* Workspaces */
+#workspaces button {
+    padding: 0 8px;
+    color: #7c6f64;          /* muted brown-grey */
+    background: transparent;
+    box-shadow: none;
+}
+
+#workspaces button.active {
+    color: #a9b665;          /* olive */
+}
+
+#workspaces button:hover {
+    background: #3c3836;
+    color: #d4be98;
+}
+
+/* Modules */
+#clock,
+#network,
+#pulseaudio,
+#battery,
+#tray {
+    padding: 0 10px;
+}
+
+#clock {
+    color: #d4be98;
+}
+
+#network.disconnected,
+#pulseaudio.muted {
+    color: #7c6f64;
+}
+
+#battery.charging,
+#battery.plugged {
+    color: #a9b665;
+}
+
+#battery.warning:not(.charging) {
+    color: #d8a657;          /* ochre */
+}
+
+#battery.critical:not(.charging) {
+    color: #ea6962;          /* soft red */
+}
