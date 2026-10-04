@@ -1,4 +1,4 @@
-// Waybar — minimal, Gruvbox Material
+// Waybar — minimal, Gruvbox Material (Nerd Font icons)
 {
     "layer": "top",
     "position": "top",
@@ -23,25 +23,27 @@
     },
 
     "network": {
-        "format-wifi": "{essid}",
-        "format-ethernet": "wired",
-        "format-disconnected": "offline",
+        "format-wifi": "󰖩  {essid}",
+        "format-ethernet": "󰈀  wired",
+        "format-disconnected": "󰖪  offline",
         "tooltip-format-wifi": "{essid}  {signalStrength}%\n{ipaddr}",
         "on-click": "kitty -e nmtui"
     },
 
     "pulseaudio": {
-        "format": "vol {volume}%",
-        "format-muted": "muted",
+        "format": "{icon}  {volume}%",
+        "format-muted": "󰖁  muted",
+        "format-icons": { "default": ["󰕿", "󰖀", "󰕾"] },
         "on-click": "pavucontrol",
         "scroll-step": 5
     },
 
     "battery": {
         "states": { "warning": 25, "critical": 10 },
-        "format": "bat {capacity}%",
-        "format-charging": "chg {capacity}%",
-        "format-plugged": "ac {capacity}%",
+        "format": "{icon}  {capacity}%",
+        "format-charging": "󰂄  {capacity}%",
+        "format-plugged": "󰚥  {capacity}%",
+        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
         "tooltip-format": "{timeTo}"
     },
 
