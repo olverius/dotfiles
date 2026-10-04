@@ -68,7 +68,8 @@
         "format-charging": "󰂄  {capacity}%",
         "format-plugged": "󰚥  {capacity}%",
         "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
-        "tooltip-format": "{timeTo}"
+        "tooltip-format": "{timeTo}",
+	"on-click": "$HOME/.local/bin/power-menu"
     },
 
     "tray": {

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Pick a power profile from a small fuzzel menu
+current=$(powerprofilesctl get)
+
+choice=$(printf "power-saver\nbalanced\nperformance" \
+    | fuzzel --dmenu --prompt "power ($current) › " --lines 3 --width 30)
+
+if [ -n "$choice" ]; then
+    powerprofilesctl set "$choice"
+    notify-send "Power profile" "$choice"
+fi
