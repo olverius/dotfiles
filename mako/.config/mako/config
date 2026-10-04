@@ -1,0 +1,23 @@
+# mako — Gruvbox Material, minimal
+
+font=JetBrainsMono Nerd Font 11
+background-color=#282828ee
+text-color=#d4be98
+border-color=#a9b665
+border-size=2
+border-radius=6
+
+width=360
+height=150
+padding=12
+margin=10
+anchor=top-right
+max-visible=4
+default-timeout=5000
+
+[urgency=low]
+border-color=#504945
+
+[urgency=critical]
+border-color=#ea6962
+default-timeout=0
