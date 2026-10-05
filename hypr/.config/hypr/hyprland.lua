@@ -68,6 +68,7 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd(browser, { workspace = "2" })
 	hl.exec_cmd("kitty --class cliamp -e cliamp", { workspace = "4" })
 	hl.exec_cmd("kitty --class cava -e cava", { workspace = "4" })
+	hl.exec_cmd("kitty --class dropdown")
 end)
 
 -------------------------------
@@ -149,7 +150,7 @@ hl.animation({ leaf = "workspaces", enabled = true, speed = 2, bezier = "almostL
 hl.animation({ leaf = "workspacesIn", enabled = true, speed = 1.2, bezier = "almostLinear", style = "fade" })
 hl.animation({ leaf = "workspacesOut", enabled = true, speed = 2, bezier = "almostLinear", style = "fade" })
 hl.animation({ leaf = "zoomFactor", enabled = true, speed = 7, bezier = "quick" })
-
+hl.animation({ leaf = "specialWorkspace", enabled = true, speed = 3, bezier = "easeOutQuint", style = "slidevert" })
 -----------------
 ---- LAYOUTS ----
 -----------------
@@ -306,6 +307,9 @@ hl.bind(
 )
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("$HOME/.local/bin/remind"))
 hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("makoctl dismiss --all"))
+-- Dropdown terminal
+hl.bind(mainMod .. " + grave", hl.dsp.workspace.toggle_special("dropdown"))
+hl.bind(mainMod .. " + SHIFT + grave", hl.dsp.exec_cmd("kitty --class dropdown"))
 --------------------------------
 ---- WINDOWS AND WORKSPACES ----
 --------------------------------
@@ -361,6 +365,15 @@ hl.window_rule({
 	name = "ws-music",
 	match = { class = "^(cliamp|cava)$" },
 	workspace = "4 silent",
+})
+-- Dropdown terminal: floating at the top, lives in a hidden workspace
+hl.window_rule({
+	name = "dropdown-terminal",
+	match = { class = "^dropdown$" },
+	float = true,
+	size = "80% 45%",
+	move = "10% 50",
+	workspace = "special:dropdown silent",
 })
 -- Satty: screenshot editor pops up floating and centered
 hl.window_rule({
