@@ -305,6 +305,7 @@ hl.bind(
 	hl.dsp.exec_cmd("cliphist list | fuzzel --dmenu --prompt 'clipboard › ' | cliphist decode | wl-copy")
 )
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("$HOME/.local/bin/remind"))
+hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("makoctl dismiss --all"))
 --------------------------------
 ---- WINDOWS AND WORKSPACES ----
 --------------------------------

@@ -29,6 +29,6 @@ else
 fi
 
 systemd-run --user --quiet --on-active="$delay" --timer-property=AccuracySec=1s \
-    notify-send -u critical -a Reminder "󰂞  Reminder" "$msg"
+    notify-send -u critical -t 60000 -a Reminder "󰂞  Reminder" "$msg"
 
 notify-send "Reminder set" "$msg — $label"
