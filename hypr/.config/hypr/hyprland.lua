@@ -304,6 +304,7 @@ hl.bind(
 	mainMod .. " + SHIFT + V",
 	hl.dsp.exec_cmd("cliphist list | fuzzel --dmenu --prompt 'clipboard › ' | cliphist decode | wl-copy")
 )
+hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("$HOME/.local/bin/remind"))
 --------------------------------
 ---- WINDOWS AND WORKSPACES ----
 --------------------------------

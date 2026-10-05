@@ -36,7 +36,7 @@
         "return-type": "json",
         "interval": 1,
         "on-click": "$HOME/.local/bin/pomo toggle",
-        "on-click-right": "$HOME/.local/bin/pomo skip",
+        "on-click-right": "$HOME/.local/bin/pomo menu",
         "on-click-middle": "$HOME/.local/bin/pomo reset"
     },
     "backlight": {

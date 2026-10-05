@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 # pomo — tiny pomodoro timer for waybar
-# Usage: pomo status | toggle | reset | skip
+# Usage: pomo status | toggle | reset | skip | menu
 WORK=$((25*60)); SHORT=$((5*60)); LONG=$((15*60)); ROUNDS=4
 STATE="${XDG_CACHE_HOME:-$HOME/.cache}/pomo.state"
+CONF="${XDG_CONFIG_HOME:-$HOME/.config}/pomo.conf"
+[ -f "$CONF" ] && . "$CONF"   # saved timings from the menu
 ICON_WORK="󰔛"; ICON_BREAK="󰅶"; ICON_PAUSE="󰏤"
 
 phase=idle; running=0; end=0; remaining=0; count=0
@@ -20,16 +22,40 @@ next_phase() {
     if [ "$phase" = work ]; then
         count=$((count + 1))
         if [ $((count % ROUNDS)) -eq 0 ]; then
-            start_phase long;  notify-send "Pomodoro" "Long break — 15 min"
+            start_phase long;  notify-send "Pomodoro" "Long break — $((LONG/60)) min"
         else
-            start_phase short; notify-send "Pomodoro" "Break — 5 min"
+            start_phase short; notify-send "Pomodoro" "Break — $((SHORT/60)) min"
         fi
     else
-        start_phase work; notify-send "Pomodoro" "Focus — 25 min"
+        start_phase work; notify-send "Pomodoro" "Focus — $((WORK/60)) min"
     fi
 }
 
+set_timings() {
+    mkdir -p "$(dirname "$CONF")"
+    printf 'WORK=%s\nSHORT=%s\nLONG=%s\nROUNDS=%s\n' $(($1*60)) $(($2*60)) $(($3*60)) 4 > "$CONF"
+    notify-send "Pomodoro" "Timings: $1 / $2 min (long break $3)"
+}
+
 case "$1" in
+    menu)
+        choice=$(printf '%s\n' \
+            "25 / 5    classic" \
+            "45 / 15" \
+            "50 / 10   deep work" \
+            "90 / 20   long focus" \
+            "skip phase" \
+            "reset" \
+          | fuzzel --dmenu --prompt "pomodoro ($((WORK/60))/$((SHORT/60))) › " --lines 6 --width 32)
+        case "$choice" in
+            "25 / 5"*) set_timings 25 5 15 ;;
+            "45 / 15"*) set_timings 45 15 30 ;;
+            "50 / 10"*) set_timings 50 10 30 ;;
+            "90 / 20"*) set_timings 90 20 30 ;;
+            "skip phase") [ "$phase" != idle ] && next_phase; save ;;
+            "reset") rm -f "$STATE" ;;
+        esac
+        exit 0 ;;
     toggle)
         if [ "$phase" = idle ]; then start_phase work
         elif [ "$running" = 1 ]; then remaining=$((end - now)); running=0
@@ -41,7 +67,7 @@ esac
 
 # status (called by waybar every second)
 if [ "$phase" = idle ]; then
-    printf '{"text":"%s","class":"idle","tooltip":"Pomodoro — click to start"}\n' "$ICON_WORK"
+    printf '{"text":"%s","class":"idle","tooltip":"Pomodoro — click to start · right-click: timings"}\n' "$ICON_WORK"
     exit 0
 fi
 
@@ -57,5 +83,5 @@ if [ "$running" = 0 ]; then icon=$ICON_PAUSE; class=paused
 elif [ "$phase" = work ]; then icon=$ICON_WORK; class=work
 else icon=$ICON_BREAK; class=break; fi
 
-printf '{"text":"%s  %02d:%02d","class":"%s","tooltip":"%s · %d done\\nclick: pause/resume · right: skip · middle: reset"}\n' \
+printf '{"text":"%s  %02d:%02d","class":"%s","tooltip":"%s · %d done\\nclick: pause/resume · right: menu · middle: reset"}\n' \
     "$icon" "$mm" "$ss" "$class" "$phase" "$count"
