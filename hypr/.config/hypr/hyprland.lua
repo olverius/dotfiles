@@ -301,3 +301,21 @@ hl.window_rule({
     move  = "20 monitor_h-120",
     float = true,
 })
+
+-- Small utility apps: floating, centered, sensible size
+hl.window_rule({
+    name  = "float-utilities",
+    match = { class = "^(org.pulseaudio.pavucontrol|pavucontrol|blueman-manager|nwg-look|nm-connection-editor|org.gnome.FileRoller)$" },
+    float  = true,
+    center = true,
+    size   = "900 600",
+})
+
+-- cliamp: floating music player window
+hl.window_rule({
+    name  = "float-cliamp",
+    match = { class = "^cliamp$" },
+    float  = true,
+    center = true,
+    size   = "1000 650",
+})
