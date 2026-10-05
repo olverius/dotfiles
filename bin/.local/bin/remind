@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # remind — two-step reminder: first what, then when
 # "when": a number of minutes (e.g. 20), or 1h30m, 45s, or a clock time like 18:30
+SOUND="/usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga"
 
 msg=$(fuzzel --dmenu --prompt "remind me to › " --lines 0 --width 40 < /dev/null)
 [ -z "$msg" ] && exit 0
@@ -10,11 +11,9 @@ when=${when// /}
 [ -z "$when" ] && exit 0
 
 if [[ $when =~ ^[0-9]+$ ]]; then
-    # plain number = minutes
     delay="${when}m"
     label="in $when min"
 elif [[ $when =~ ^[0-9]{1,2}:[0-9]{2}$ ]]; then
-    # clock time: today, or tomorrow if it has already passed
     now=$(date +%s)
     target=$(date -d "$when" +%s) || exit 1
     [ "$target" -le "$now" ] && target=$((target + 86400))
@@ -29,6 +28,7 @@ else
 fi
 
 systemd-run --user --quiet --on-active="$delay" --timer-property=AccuracySec=1s \
-    notify-send -u critical -t 60000 -a Reminder "󰂞  Reminder" "$msg"
+    /bin/sh -c 'notify-send -u critical -t 60000 -a Reminder "󰂞  Reminder" "$1"; pw-play "$2" 2>/dev/null || paplay "$2" 2>/dev/null' \
+    remind "$msg" "$SOUND"
 
 notify-send "Reminder set" "$msg — $label"
