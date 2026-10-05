@@ -16,9 +16,9 @@ for i in "${!walls[@]}"; do
 done
 
 awww img "$next" \
-  --transition-type fade \
+  --transition-type wave \
   --transition-pos top-right \
-  --transition-duration 0.8 \
+  --transition-duration 0.5 \
   --transition-fps 60
 
 ln -sf "$next" "$link"
