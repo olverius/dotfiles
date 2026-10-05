@@ -20,6 +20,23 @@ hl.monitor({
 	position = "auto",
 	scale = "auto",
 })
+-- Laptop screen: 90 Hz on AC, 60 Hz on battery (matches refresh-auto, so reloads don't flicker)
+local function on_ac()
+	local f = io.open("/sys/class/power_supply/AC0/online")
+	if not f then
+		return true
+	end
+	local v = f:read("*l")
+	f:close()
+	return v == "1"
+end
+
+hl.monitor({
+	output = "eDP-1",
+	mode = on_ac() and "2880x1800@90" or "2880x1800@60",
+	position = "auto",
+	scale = "auto",
+})
 
 ---------------------
 ---- MY PROGRAMS ----
