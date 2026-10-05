@@ -141,3 +141,13 @@ tooltip label {
 #custom-remind:hover {
     color: #a9b665;
 }
+/* Next calendar event */
+#custom-nextevent {
+    padding: 0 10px;
+    color: #a89984;
+}
+
+#custom-nextevent.today {
+    color: #d8a657;
+}
+

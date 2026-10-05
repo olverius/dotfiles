@@ -395,3 +395,11 @@ hl.window_rule({
 	center = true,
 	size = "1200 800",
 })
+-- Calendar (ikhal): floating, centered
+hl.window_rule({
+	name = "float-calendar",
+	match = { class = "^calendar$" },
+	float = true,
+	center = true,
+	size = "1100 700",
+})

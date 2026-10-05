@@ -10,7 +10,7 @@
 
     "modules-left": ["hyprland/workspaces", "custom/media", "custom/media-next"],
     "modules-center": ["clock", "custom/pomo"],
-    "modules-right": ["custom/remind", "tray","backlight", "backlight/slider", "pulseaudio", "battery"],
+    "modules-right": ["custom/nextevent", "custom/remind", "tray","backlight", "backlight/slider", "pulseaudio", "battery"],
 
     "hyprland/workspaces": {
         "format": "{id}"
@@ -36,6 +36,12 @@
         "format": "{:%H:%M}",
         "format-alt": "{:%a %d %b  %H:%M}",
         "tooltip-format": "<tt>{calendar}</tt>"
+    },
+    "custom/nextevent": {
+        "exec": "$HOME/.local/bin/nextevent",
+        "return-type": "json",
+        "interval": 60,
+        "on-click": "kitty --class calendar -e ikhal"
     },
     "custom/pomo": {
         "exec": "$HOME/.local/bin/pomo status",
