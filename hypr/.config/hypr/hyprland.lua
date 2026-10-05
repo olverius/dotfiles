@@ -311,6 +311,7 @@ hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("makoctl dismiss --all"))
 -- Dropdown terminal
 hl.bind(mainMod .. " + grave", hl.dsp.workspace.toggle_special("dropdown"))
 hl.bind(mainMod .. " + SHIFT + grave", hl.dsp.exec_cmd("kitty --class dropdown"))
+hl.bind(mainMod .. " + slash", hl.dsp.exec_cmd("$HOME/.local/bin/keybinds"))
 --------------------------------
 ---- WINDOWS AND WORKSPACES ----
 --------------------------------

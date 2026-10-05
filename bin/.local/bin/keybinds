@@ -1,0 +1,117 @@
+#!/usr/bin/env python3
+"""keybinds — searchable list of your Hyprland shortcuts, read straight from hyprland.lua.
+
+Comments at the end of a bind line (-- like this) are used as the description,
+so the list stays up to date whenever you add or change binds.
+"""
+import os, re, subprocess
+
+CONF = os.path.expanduser("~/.config/hypr/hyprland.lua")
+
+KEY_NAMES = {
+    "XF86AudioRaiseVolume": "Volume Up", "XF86AudioLowerVolume": "Volume Down",
+    "XF86AudioMute": "Mute", "XF86AudioMicMute": "Mic Mute",
+    "XF86MonBrightnessUp": "Brightness Up", "XF86MonBrightnessDown": "Brightness Down",
+    "XF86AudioNext": "Next Track", "XF86AudioPrev": "Prev Track",
+    "XF86AudioPlay": "Play", "XF86AudioPause": "Pause",
+    "mouse:272": "Left Drag", "mouse:273": "Right Drag",
+    "mouse_down": "Scroll Down", "mouse_up": "Scroll Up",
+    "grave": "`", "left": "Left", "right": "Right", "up": "Up", "down": "Down", "Print": "Print", "Escape": "Esc", "slash": "/", "space": "Space",
+}
+VARS = {"terminal": "open terminal", "browser": "open browser",
+        "menu": "app launcher", "fileManager": "file manager"}
+COMMANDS = [   # (part of the command, friendly label)
+    ("hyprshutdown", "log out / exit Hyprland"), ("hyprlock", "lock screen"),
+    ("set-volume -l 1", "volume +5%"), ("set-volume", "volume -5%"),
+    ("SINK@ toggle", "mute speakers"), ("SOURCE@ toggle", "mute microphone"),
+    ("output-volume raise", "volume up"), ("output-volume lower", "volume down"),
+    ("output-volume mute", "mute speakers"), ("input-volume mute", "mute microphone"),
+    ("brightness raise", "brightness up"), ("brightness lower", "brightness down"),
+    ("set 5%+", "brightness up"), ("set 5%-", "brightness down"),
+    ("playerctl next", "next track"), ("playerctl previous", "previous track"),
+    ("play-pause", "play / pause"), ("satty", "screenshot → editor"),
+    ("cliphist", "clipboard history"), ("next-wallpaper", "next wallpaper"),
+    ("spotify", "open Spotify"), ("cliamp", "open cliamp"), ("firefox", "open Firefox"),
+    ("remind", "new reminder"), ("makoctl dismiss", "dismiss notifications"),
+    ("power-menu", "power profile menu"), ("pomo", "pomodoro"), ("keybinds", "this list"),
+    ("kitty --class dropdown", "new dropdown terminal"),
+]
+
+def describe(action):
+    m = re.search(r'exec_cmd\(\s*([A-Za-z_]+)\s*\)', action)
+    if m and m.group(1) in VARS:
+        return VARS[m.group(1)]
+    m = re.search(r'exec_cmd\(\s*(["\'])(.*)\1\s*\)', action)
+    if m:
+        for part, label in COMMANDS:
+            if part in m.group(2): return label
+        cmd = m.group(2).replace("$HOME/.local/bin/", "").replace("$HOME/.config/hypr/scripts/", "")
+        return "run: " + (cmd if len(cmd) < 45 else cmd[:42] + "…")
+    rules = [
+        (r'window\.close', "close window"), (r'window\.float', "toggle floating"),
+        (r'window\.fullscreen', "fullscreen"), (r'window\.pseudo', "pseudo-tile"),
+        (r'togglesplit', "toggle split direction"), (r'window\.drag', "move window (drag)"),
+        (r'window\.resize', "resize window (drag)"),
+        (r'toggle_special\("magic"\)', "show/hide scratchpad"),
+        (r'toggle_special\("([^"]+)"\)', None),
+        (r'special:magic', "move window to scratchpad"),
+        (r'workspace\s*=\s*"e\+1"', "next workspace"), (r'workspace\s*=\s*"e-1"', "previous workspace"),
+        (r'direction\s*=\s*"(\w+)"', None), (r'hl\.dsp\.exit', "exit Hyprland"),
+    ]
+    for pat, text in rules:
+        m = re.search(pat, action)
+        if m:
+            if text: return text
+            if "toggle_special" in pat: return f"show/hide {m.group(1)}"
+            verb = "move window" if "window.move" in action else "focus"
+            return f"{verb} {m.group(1)}"
+    return action.strip()[:50]
+
+def pretty_key(raw):
+    parts = [p.strip() for p in raw.split("+")]
+    return " + ".join(KEY_NAMES.get(p, p) for p in parts)
+
+def parse():
+    text = open(CONF, encoding="utf-8").read()
+    rows = []
+    i = 0
+    while True:
+        i = text.find("hl.bind(", i)
+        if i < 0: break
+        # skip commented-out binds
+        line_start = text.rfind("\n", 0, i) + 1
+        if text[line_start:i].strip().startswith("--"):
+            i += 8; continue
+        depth, j, quote = 0, i + 7, None
+        while j < len(text):
+            ch = text[j]
+            if quote:
+                if ch == quote and text[j-1] != "\\": quote = None
+            elif ch in "\"'": quote = ch
+            elif ch == "(": depth += 1
+            elif ch == ")":
+                depth -= 1
+                if depth == 0: break
+            j += 1
+        call = text[i+8:j]
+        rest = text[j+1:text.find("\n", j) if text.find("\n", j) > 0 else len(text)]
+        comment = rest.split("--", 1)[1].strip() if "--" in rest else ""
+        i = j
+        km = re.match(r'\s*(mainMod\s*\.\.\s*)?"([^"]*)"\s*,(.*)', call, re.S)
+        if not km:
+            continue                      # dynamic binds (e.g. the workspace loop) handled below
+        key = ("SUPER " if km.group(1) else "") + km.group(2)
+        key = re.sub(r'\s+', ' ', key).strip()
+        desc = describe(km.group(3))
+        if comment and (desc.startswith("run: ") or desc == km.group(3).strip()[:50]):
+            desc = comment                # unknown action: fall back to your own comment
+        rows.append((pretty_key(key), desc))
+    rows.append(("SUPER + 1…0", "go to workspace 1–10"))
+    rows.append(("SUPER + SHIFT + 1…0", "move window to workspace 1–10"))
+    return rows
+
+rows = parse()
+width = max(len(k) for k, _ in rows) + 3
+listing = "\n".join(f"{k.ljust(width)}{d}" for k, d in rows)
+subprocess.run(["fuzzel", "--dmenu", "--prompt", "keybinds › ", "--width", "70",
+                "--lines", "18", "--no-run-if-empty"], input=listing, text=True)
