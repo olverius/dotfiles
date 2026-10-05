@@ -27,3 +27,9 @@ export BAT_THEME="gruvbox-dark"
 export FZF_DEFAULT_OPTS="--color=bg+:#3c3836,bg:#282828,spinner:#89b482,hl:#d8a657 \
 --color=fg:#d4be98,header:#d8a657,info:#7daea3,pointer:#a9b665 \
 --color=marker:#a9b665,fg+:#d4be98,prompt:#a9b665,hl+:#d8a657"
+# cmatrix: match its background to the terminal so there's no frame
+cmatrix() {
+  printf '\e]4;0;#282828\a'
+  command cmatrix "$@"
+  printf '\e]4;0;#3c3836\a'
+}
