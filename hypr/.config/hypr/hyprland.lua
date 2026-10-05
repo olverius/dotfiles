@@ -314,6 +314,11 @@ hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("makoctl dismiss --all"))
 hl.bind(mainMod .. " + grave", hl.dsp.workspace.toggle_special("dropdown"))
 hl.bind(mainMod .. " + SHIFT + grave", hl.dsp.exec_cmd("kitty --class dropdown"))
 hl.bind(mainMod .. " + slash", hl.dsp.exec_cmd("$HOME/.local/bin/keybinds"))
+
+-- cliamp controls (work from any workspace)
+hl.bind(mainMod .. " + bracketright", hl.dsp.exec_cmd("playerctl --player=cliamp next")) -- cliamp: next song
+hl.bind(mainMod .. " + bracketleft", hl.dsp.exec_cmd("playerctl --player=cliamp previous")) -- cliamp: previous song
+hl.bind(mainMod .. " + backslash", hl.dsp.exec_cmd("playerctl --player=cliamp play-pause")) -- cliamp: play / pause
 --------------------------------
 ---- WINDOWS AND WORKSPACES ----
 --------------------------------
