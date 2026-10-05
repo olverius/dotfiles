@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
+# Cycle to the next wallpaper in ~/Pictures/wallpapers with a smooth awww transition
 dir="$HOME/Pictures/wallpapers"
 link="$HOME/.cache/current-wallpaper"
 
-mapfile -t walls < <(find "$dir" -maxdepth 1 -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) | sort)
+mapfile -t walls < <(find "$dir" -maxdepth 1 -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' -o -iname '*.gif' \) | sort)
 [ ${#walls[@]} -eq 0 ] && exit 1
 
 current=$(readlink "$link")
@@ -14,5 +15,10 @@ for i in "${!walls[@]}"; do
     fi
 done
 
-hyprctl hyprpaper wallpaper ",$next"
+awww img "$next" \
+    --transition-type grow \
+    --transition-pos top-right \
+    --transition-duration 1.2 \
+    --transition-fps 60
+
 ln -sf "$next" "$link"

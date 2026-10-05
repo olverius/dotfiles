@@ -1,5 +1,5 @@
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
--- Oliwer's Hyprland config                              --
+-- olverius Hyprland config                              --
 -- Theme: Gruvbox Material (earthy, minimal)             --
 -- Wiki: https://wiki.hypr.land/Configuring/Start/       --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -54,7 +54,8 @@ local browser = "firefox"
 hl.on("hyprland.start", function()
 	hl.exec_cmd("waybar")
 	hl.exec_cmd("mako")
-	hl.exec_cmd("hyprpaper")
+	hl.exec_cmd("awww-daemon")
+	hl.exec_cmd("sleep 1 && awww img ~/.cache/current-wallpaper --transition-type fade")
 	hl.exec_cmd("hypridle")
 	hl.exec_cmd("nm-applet")
 	hl.exec_cmd("systemctl --user start hyprpolkitagent")
