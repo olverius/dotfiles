@@ -1,0 +1,31 @@
+add_newline = true
+format = "$directory$git_branch$git_status$rust$python$c$cmd_duration$line_break$character"
+
+[directory]
+style = "bold #a9b665"
+truncation_length = 3
+
+[git_branch]
+format = "[$symbol$branch]($style) "
+style = "#d8a657"
+
+[git_status]
+format = "([$all_status$ahead_behind]($style) )"
+style = "#e78a4e"
+
+[rust]
+style = "#e78a4e"
+
+[python]
+style = "#7daea3"
+
+[c]
+style = "#7daea3"
+
+[cmd_duration]
+format = "[$duration]($style) "
+style = "#928374"
+
+[character]
+success_symbol = "[›](bold #a9b665)"
+error_symbol = "[›](bold #ea6962)"
