@@ -8,12 +8,26 @@
     "margin-right": 8,
     "spacing": 4,
 
-    "modules-left": ["hyprland/workspaces"],
+    "modules-left": ["hyprland/workspaces", "mpris"],
     "modules-center": ["clock"],
     "modules-right": ["tray","backlight", "backlight/slider", "pulseaudio", "battery"],
 
     "hyprland/workspaces": {
         "format": "{id}"
+    },
+    "mpris": {
+        "format": "{player_icon}  {artist} – {title}",
+        "format-paused": "{status_icon}  {artist} – {title}",
+	"ignored-players": ["cliamp"],
+        "player-icons": {
+            "default": "󰎇",
+            "spotify": "󰓇"
+        },
+        "status-icons": {
+            "paused": "󰏤"
+        },
+        "max-length": 45,
+        "tooltip-format": "{player}: {artist} – {title}"
     },
 
     "clock": {

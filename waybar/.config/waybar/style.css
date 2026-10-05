@@ -102,3 +102,13 @@ tooltip label {
     border-radius: 3px;
     background-color: #d8a657;
 }
+
+/* Now playing */
+#mpris {
+    padding: 0 12px;
+    color: #a89984;
+}
+
+#mpris.paused {
+    color: #7c6f64;
+}
