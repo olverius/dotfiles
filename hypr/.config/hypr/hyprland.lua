@@ -46,6 +46,8 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("systemctl --user start hyprpolkitagent")
     hl.exec_cmd("blueman-applet")
     hl.exec_cmd("chromium --no-startup-window")
+    hl.exec_cmd("wl-paste --type text --watch cliphist store")
+    hl.exec_cmd("wl-paste --type image --watch cliphist store")
 end)
 
 
@@ -266,6 +268,8 @@ hl.bind("SHIFT + Print",       hl.dsp.exec_cmd('grim - | wl-copy'))             
 hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd('grim -g "$(slurp)" ~/Pictures/screenshot-$(date +%F_%H-%M-%S).png'))  -- area → file
 
 hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("$HOME/.config/hypr/scripts/next-wallpaper.sh")) -- wallpaper change
+
+hl.bind(mainMod .. " + SHIFT + V", hl.dsp.exec_cmd("cliphist list | fuzzel --dmenu --prompt 'clipboard › ' | cliphist decode | wl-copy"))
 --------------------------------
 ---- WINDOWS AND WORKSPACES ----
 --------------------------------
