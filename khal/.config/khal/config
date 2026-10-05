@@ -34,6 +34,7 @@ longdatetimeformat = %d.%m.%Y %H:%M
 firstweekday = 0
 
 [default]
+default_calendar = wysylajmicossgmailcom
 highlight_event_days = True
 timedelta = 7d
 
