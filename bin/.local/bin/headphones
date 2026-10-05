@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# headphones — waybar module: battery of connected headphones (hidden when none)
+#   Bluetooth headphones (e.g. Sony WH-1000XM4) are read via upower
+#   USB-dongle gaming headsets (e.g. Logitech G Pro X 2) are read via headsetcontrol
+ICON="󰋋"
+found=()   # entries: "name|level"
+
+# 1) Bluetooth / anything upower knows about
+for d in $(upower -e 2>/dev/null | grep -iE 'headset|headphone|audio'); do
+    info=$(upower -i "$d")
+    p=$(awk '/percentage/ {gsub("%","",$2); print $2; exit}' <<< "$info")
+    m=$(awk -F': *' '/model/ {print $2; exit}' <<< "$info")
+    [ -n "$p" ] && found+=("${m:-Headphones}|${p%.*}")
+done
+
+# 2) USB-dongle headsets via headsetcontrol
+if command -v headsetcontrol >/dev/null 2>&1; then
+    js=$(headsetcontrol -b -o json 2>/dev/null)
+    if [ -n "$js" ] && command -v jq >/dev/null 2>&1; then
+        while IFS='|' read -r name lvl st; do
+            case "$st" in BATTERY_AVAILABLE|BATTERY_CHARGING) ;; *) continue ;; esac
+            [[ $lvl =~ ^[0-9]+$ ]] && found+=("$name|$lvl")
+        done < <(jq -r '.devices[]? | "\(.product // .device // "Headset")|\(.battery.level)|\(.battery.status)"' <<< "$js" 2>/dev/null)
+    else
+        lvl=$(headsetcontrol -b -c 2>/dev/null)      # older versions: plain number, -1 = charging
+        [[ $lvl =~ ^[0-9]+$ ]] && found+=("Headset|$lvl")
+    fi
+fi
+
+if [ ${#found[@]} -eq 0 ]; then
+    echo '{"text":""}'
+    exit 0
+fi
+
+text="$ICON "; tip=""; low=100
+for e in "${found[@]}"; do
+    name=${e%%|*}; lvl=${e##*|}
+    text+=" ${lvl}%"
+    tip+="${name}  ${lvl}%\\n"
+    [ "$lvl" -lt "$low" ] && low=$lvl
+done
+cls="ok"; [ "$low" -le 20 ] && cls="low"
+printf '{"text":"%s","tooltip":"%s","class":"%s"}\n' "$text" "${tip%\\n}" "$cls"

@@ -150,4 +150,12 @@ tooltip label {
 #custom-nextevent.today {
     color: #d8a657;
 }
+/* Headphone battery */
+#custom-headphones {
+    padding: 0 10px;
+    color: #d4be98;
+}
 
+#custom-headphones.low {
+    color: #ea6962;
+}

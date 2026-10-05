@@ -10,7 +10,7 @@
 
     "modules-left": ["hyprland/workspaces", "custom/media", "custom/media-next"],
     "modules-center": ["clock", "custom/pomo"],
-    "modules-right": ["custom/nextevent", "custom/remind", "tray","backlight", "backlight/slider", "pulseaudio", "battery"],
+    "modules-right": ["custom/nextevent", "custom/remind", "tray","backlight", "backlight/slider","custom/headphones", "pulseaudio", "battery"],
 
     "hyprland/workspaces": {
         "format": "{id}"
@@ -82,6 +82,11 @@
         "format-disconnected": "󰖪  offline",
         "tooltip-format-wifi": "{essid}  {signalStrength}%\n{ipaddr}",
         "on-click": "kitty -e nmtui"
+    },
+    "custom/headphones": {
+        "exec": "$HOME/.local/bin/headphones",
+        "return-type": "json",
+        "interval": 60
     },
 
     "pulseaudio": {
