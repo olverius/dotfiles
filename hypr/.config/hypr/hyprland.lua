@@ -47,6 +47,9 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("wl-paste --type image --watch cliphist store")
 	hl.exec_cmd("swayosd-server")
 	hl.exec_cmd("$HOME/.local/bin/refresh-auto")
+	hl.exec_cmd(terminal, { workspace = "1" })
+	hl.exec_cmd("kitty --class cliamp -e cliamp", { workspace = "4" })
+	hl.exec_cmd("kitty --class cava -e cava", { workspace = "4" })
 end)
 
 -------------------------------
@@ -326,13 +329,18 @@ hl.window_rule({
 	size = "900 600",
 })
 
--- cliamp: floating music player window
+-- Browser always on workspace 2
 hl.window_rule({
-	name = "float-cliamp",
-	match = { class = "^cliamp$" },
-	float = true,
-	center = true,
-	size = "1000 650",
+	name = "ws-browser",
+	match = { class = "^firefox$" },
+	workspace = "2",
+})
+
+-- Music (cliamp + cava) on workspace 4, tiled side by side
+hl.window_rule({
+	name = "ws-music",
+	match = { class = "^(cliamp|cava)$" },
+	workspace = "4",
 })
 -- Satty: screenshot editor pops up floating and centered
 hl.window_rule({
