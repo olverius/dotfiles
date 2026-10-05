@@ -1,9 +1,29 @@
-# khal — minimal terminal calendar (events synced from Google by vdirsyncer)
+# khal — minimal terminal calendar (generated; hidden calendars are left out)
 
 [calendars]
-[[google]]
-path = ~/.local/share/calendars/*
-type = discover
+[[School]]
+path = /home/olverius/.local/share/calendars/be337692945c6f2d6615dbb30cff961a55bb1fc06b9e35a8476bc1a61ab1ce48@group.calendar.google.com
+type = calendar
+
+[[SPRO 3]]
+path = /home/olverius/.local/share/calendars/d6728b97f68d12430843b2dfaff16e5ca0695b1918a2a514912e6c31991c219b@group.calendar.google.com
+type = calendar
+
+[[wita w Polsce]]
+path = /home/olverius/.local/share/calendars/e1m2ss3fdhkn6q13d1nmoqb4c5sk0pridtqn0bjm5phm2r35dpi62shectnmuprcckn66rrd@virtual
+type = calendar
+
+[[Grupa rodzinna]]
+path = /home/olverius/.local/share/calendars/family11460912650478497980@group.calendar.google.com
+type = calendar
+
+[[Planday]]
+path = /home/olverius/.local/share/calendars/planday
+type = calendar
+
+[[wysylajmicossgmailcom]]
+path = /home/olverius/.local/share/calendars/wysylajmicoss@gmail.com
+type = calendar
 
 [locale]
 timeformat = %H:%M
