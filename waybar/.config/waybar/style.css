@@ -104,11 +104,7 @@ tooltip label {
 }
 
 /* Now playing */
-#mpris {
+#custom-media {
     padding: 0 12px;
     color: #a89984;
-}
-
-#mpris.paused {
-    color: #7c6f64;
 }

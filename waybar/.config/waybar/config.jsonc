@@ -8,26 +8,22 @@
     "margin-right": 8,
     "spacing": 4,
 
-    "modules-left": ["hyprland/workspaces", "mpris"],
+    "modules-left": ["hyprland/workspaces", "custom/media"],
     "modules-center": ["clock"],
     "modules-right": ["tray","backlight", "backlight/slider", "pulseaudio", "battery"],
 
     "hyprland/workspaces": {
         "format": "{id}"
     },
-    "mpris": {
-        "format": "{player_icon}  {artist} – {title}",
-        "format-paused": "{status_icon}  {artist} – {title}",
-	"ignored-players": ["cliamp"],
-        "player-icons": {
-            "default": "󰎇",
-            "spotify": "󰓇"
-        },
-        "status-icons": {
-            "paused": "󰏤"
-        },
+    "custom/media": {
+        "exec": "playerctl --follow metadata --format '{{ artist }} – {{ title }}' 2>/dev/null",
+        "format": "󰎇  {}",
         "max-length": 45,
-        "tooltip-format": "{player}: {artist} – {title}"
+        "escape": true,
+        "on-click": "playerctl play-pause",
+        "on-click-right": "playerctl next",
+        "on-scroll-up": "playerctl next",
+        "on-scroll-down": "playerctl previous"
     },
 
     "clock": {
