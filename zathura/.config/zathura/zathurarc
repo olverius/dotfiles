@@ -1,0 +1,37 @@
+# zathura — Gruvbox Material
+
+set font                    "JetBrainsMono Nerd Font 11"
+set selection-clipboard     clipboard
+set guioptions              ""
+set adjust-open             "best-fit"
+set statusbar-h-padding     10
+set statusbar-v-padding     6
+
+# UI
+set default-bg              "#282828"
+set default-fg              "#d4be98"
+set statusbar-bg            "#32302f"
+set statusbar-fg            "#d4be98"
+set inputbar-bg             "#282828"
+set inputbar-fg             "#d4be98"
+set notification-bg         "#32302f"
+set notification-fg         "#d4be98"
+set notification-error-bg   "#ea6962"
+set notification-error-fg   "#282828"
+set notification-warning-bg "#d8a657"
+set notification-warning-fg "#282828"
+set completion-bg           "#32302f"
+set completion-fg           "#d4be98"
+set completion-highlight-bg "#a9b665"
+set completion-highlight-fg "#282828"
+set highlight-color         "rgba(216,166,87,0.5)"
+set highlight-active-color  "rgba(169,182,101,0.5)"
+set index-bg                "#282828"
+set index-fg                "#d4be98"
+set index-active-bg         "#3c3836"
+set index-active-fg         "#a9b665"
+
+# Recolor mode (Ctrl+R): page becomes dark brown with beige text
+set recolor-lightcolor      "#282828"
+set recolor-darkcolor       "#d4be98"
+set recolor-keephue         true
