@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Switch screen refresh rate with the power source: 90 Hz on AC, 60 Hz on battery
+MONITOR="eDP-1"
+RES="2880x1800"
+
+last=""
+while true; do
+    online=$(cat /sys/class/power_supply/{AC,ACAD,ADP}*/online 2>/dev/null | head -1)
+    if [ "$online" != "$last" ]; then
+        if [ "$online" = "1" ]; then rate=90; else rate=60; fi
+        hyprctl eval "hl.monitor({ output = \"$MONITOR\", mode = \"${RES}@${rate}\", position = \"auto\", scale = \"auto\" })" > /dev/null
+        last=$online
+    fi
+    sleep 5
+done
