@@ -104,7 +104,8 @@
   "custom/remind": {
         "format": "󰂚",
         "tooltip-format": "New reminder",
-        "on-click": "$HOME/.local/bin/remind"
+        "on-click": "$HOME/.local/bin/remind",
+        "on-click-right": "$HOME/.local/bin/remind list"
     },
 
     "tray": {

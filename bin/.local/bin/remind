@@ -1,34 +1,69 @@
 #!/usr/bin/env bash
 # remind — two-step reminder: first what, then when
-# "when": a number of minutes (e.g. 20), or 1h30m, 45s, or a clock time like 18:30
+#   remind        new reminder ("when": minutes like 20, or 1h30m, 45s, or a clock time like 18:30)
+#   remind list   show pending reminders; pick one to cancel it
 SOUND="/usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga"
+LIST="${XDG_CACHE_HOME:-$HOME/.cache}/remind.list"
+touch "$LIST"
+now=$(date +%s)
+
+# forget reminders that already fired
+awk -F'|' -v now="$now" '$1 > now' "$LIST" > "$LIST.tmp" && mv "$LIST.tmp" "$LIST"
+
+if [ "$1" = "list" ]; then
+    if [ ! -s "$LIST" ]; then
+        notify-send "Reminders" "No pending reminders"
+        exit 0
+    fi
+    pick=$(sort -n "$LIST" | while IFS='|' read -r t u m; do
+               printf '%s  %s\n' "$(date -d "@$t" +%H:%M)" "$m"
+           done | fuzzel --dmenu --prompt "reminders › " --width 45 --lines 8)
+    [ -z "$pick" ] && exit 0
+    confirm=$(printf 'no, keep it\nyes, cancel it\n' | fuzzel --dmenu --prompt "cancel \"${pick#*  }\"? › " --width 45 --lines 2)
+    if [ "$confirm" = "yes, cancel it" ]; then
+        line=$(sort -n "$LIST" | while IFS='|' read -r t u m; do
+                   [ "$(date -d "@$t" +%H:%M)  $m" = "$pick" ] && { echo "$u"; break; }
+               done)
+        if [ -n "$line" ]; then
+            systemctl --user stop "$line.timer" 2>/dev/null
+            grep -v "|$line|" "$LIST" > "$LIST.tmp"; mv "$LIST.tmp" "$LIST"
+            notify-send "Reminder cancelled" "${pick#*  }"
+        fi
+    fi
+    exit 0
+fi
 
 msg=$(fuzzel --dmenu --prompt "remind me to › " --lines 0 --width 40 < /dev/null)
 [ -z "$msg" ] && exit 0
+msg=${msg//|/-}
 
 when=$(fuzzel --dmenu --prompt "in how many minutes › " --lines 0 --width 40 < /dev/null)
 when=${when// /}
 [ -z "$when" ] && exit 0
 
 if [[ $when =~ ^[0-9]+$ ]]; then
-    delay="${when}m"
-    label="in $when min"
+    secs=$((when * 60)); label="in $when min"
 elif [[ $when =~ ^[0-9]{1,2}:[0-9]{2}$ ]]; then
-    now=$(date +%s)
     target=$(date -d "$when" +%s) || exit 1
     [ "$target" -le "$now" ] && target=$((target + 86400))
-    delay="$((target - now))s"
-    label="at $when"
+    secs=$((target - now)); label="at $when"
 elif [[ $when =~ ^([0-9]+[hms])+$ ]]; then
-    delay=$when
+    secs=0; rest=$when
+    while [[ $rest =~ ^([0-9]+)([hms])(.*)$ ]]; do
+        case ${BASH_REMATCH[2]} in h) secs=$((secs + BASH_REMATCH[1]*3600));; m) secs=$((secs + BASH_REMATCH[1]*60));; s) secs=$((secs + BASH_REMATCH[1]));; esac
+        rest=${BASH_REMATCH[3]}
+    done
     label="in $when"
 else
-    notify-send "Reminder" "Couldn't read the time \"$when\" — use e.g. 20m, 1h30m or 18:30"
+    notify-send "Reminder" "Couldn't read the time \"$when\" — use e.g. 20, 1h30m or 18:30"
     exit 1
 fi
 
-systemd-run --user --quiet --on-active="$delay" --timer-property=AccuracySec=1s \
+target=$((now + secs))
+unit="remind-$target-$RANDOM"
+systemd-run --user --quiet --unit="$unit" --on-active="${secs}s" --timer-property=AccuracySec=1s \
     /bin/sh -c 'notify-send -u critical -t 60000 -a Reminder "󰂞  Reminder" "$1"; pw-play "$2" 2>/dev/null || paplay "$2" 2>/dev/null' \
     remind "$msg" "$SOUND"
+echo "$target|$unit|$msg" >> "$LIST"
 
 notify-send "Reminder set" "$msg — $label"
