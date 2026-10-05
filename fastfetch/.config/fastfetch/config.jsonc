@@ -11,7 +11,7 @@
         "padding": {
             "top": 1,
             "left": 2,
-            "right": 4
+            "right": 3
         }
     },
     "display": {
@@ -21,7 +21,7 @@
             "title": "38;2;216;166;87"
         },
         "key": {
-            "width": 14
+            "width": 12
         }
     },
     "modules": [
@@ -37,52 +37,62 @@
         },
         {
             "type": "custom",
-            "format": "\u001b[38;2;146;131;116m────────────────────────────────"
+            "format": "\u001b[38;2;146;131;116m──────────────────────────────"
         },
         {
             "type": "os",
-            "key": "󰣇  os"
+            "key": "󰣇  os",
+            "format": "{name}"
         },
         {
             "type": "kernel",
-            "key": "  kernel"
+            "key": "  kernel",
+            "format": "{release}"
         },
         {
             "type": "wm",
-            "key": "  wm"
+            "key": "  wm",
+            "format": "{pretty-name}"
         },
         {
             "type": "terminal",
-            "key": "  terminal"
+            "key": "  terminal",
+            "format": "{pretty-name}"
         },
         {
             "type": "shell",
-            "key": "  shell"
+            "key": "  shell",
+            "format": "{pretty-name}"
         },
         {
             "type": "custom",
-            "format": "\u001b[38;2;146;131;116m────────────────────────────────"
+            "format": "\u001b[38;2;146;131;116m──────────────────────────────"
         },
         {
             "type": "cpu",
-            "key": "󰻠  cpu"
+            "key": "󰻠  cpu",
+            "format": "{name}"
         },
         {
-            "type": "gpu",
-            "key": "󰍹  gpu"
+            "type": "custom",
+            "key": "󰍹  gpu",
+            "format": "Radeon Vega (iGPU)"
         },
         {
             "type": "memory",
-            "key": "󰍛  memory"
+            "key": "󰍛  memory",
+            "format": "{used} / {total}"
         },
         {
             "type": "disk",
             "key": "󰋊  disk",
-            "folders": "/"
+            "folders": "/",
+            "format": "{size-used} / {size-total}"
         },
         {
             "type": "battery",
-            "key": "󰁹  battery"
+            "key": "󰁹  battery",
+            "format": "{capacity}"
         },
         {
             "type": "uptime",
