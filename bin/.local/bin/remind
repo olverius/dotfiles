@@ -69,4 +69,4 @@ systemd-run --user --quiet --unit="$unit" --on-calendar="$(date -d "@$target" '+
     remind "$msg" "$SOUND"
 echo "$target|$unit|$msg" >> "$LIST"
 
-notify-send "Reminder set" "$msg — $label"
+notify-send "Reminder set" "$msg — $label (at $(date -d "@$target" +%H:%M))"
