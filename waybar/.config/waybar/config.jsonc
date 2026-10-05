@@ -10,7 +10,7 @@
 
     "modules-left": ["hyprland/workspaces", "custom/media", "custom/media-next"],
     "modules-center": ["clock", "custom/pomo"],
-    "modules-right": ["tray","backlight", "backlight/slider", "pulseaudio", "battery"],
+    "modules-right": ["custom/remind", "tray","backlight", "backlight/slider", "pulseaudio", "battery"],
 
     "hyprland/workspaces": {
         "format": "{id}"
@@ -94,6 +94,11 @@
         "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
         "tooltip-format": "{timeTo}",
 	"on-click": "$HOME/.local/bin/power-menu"
+    },
+  "custom/remind": {
+        "format": "󰂚",
+        "tooltip-format": "New reminder",
+        "on-click": "$HOME/.local/bin/remind"
     },
 
     "tray": {

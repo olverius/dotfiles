@@ -133,3 +133,11 @@ tooltip label {
 #custom-media-next:hover {
     color: #d4be98;
 }
+#custom-remind {
+    padding: 0 10px;
+    color: #d4be98;
+}
+
+#custom-remind:hover {
+    color: #a9b665;
+}
