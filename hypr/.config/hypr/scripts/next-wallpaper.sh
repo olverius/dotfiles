@@ -9,16 +9,16 @@ mapfile -t walls < <(find "$dir" -maxdepth 1 -type f \( -iname '*.jpg' -o -iname
 current=$(readlink "$link")
 next="${walls[0]}"
 for i in "${!walls[@]}"; do
-    if [ "${walls[$i]}" = "$current" ]; then
-        next="${walls[$(( (i + 1) % ${#walls[@]} ))]}"
-        break
-    fi
+  if [ "${walls[$i]}" = "$current" ]; then
+    next="${walls[$(((i + 1) % ${#walls[@]}))]}"
+    break
+  fi
 done
 
 awww img "$next" \
-    --transition-type grow \
-    --transition-pos top-right \
-    --transition-duration 1.2 \
-    --transition-fps 60
+  --transition-type fade \
+  --transition-pos top-right \
+  --transition-duration 0.8 \
+  --transition-fps 60
 
 ln -sf "$next" "$link"
