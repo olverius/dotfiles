@@ -1,0 +1,43 @@
+# Gruvbox Material — minimal GRUB theme
+title-text: ""
+desktop-color: "#282828"
+terminal-font: "Gruvbox Regular 32"
+
++ label {
+    top = 22%
+    left = 0
+    width = 100%
+    align = "center"
+    text = "arch linux"
+    font = "Gruvbox Regular 32"
+    color = "#d8a657"
+}
+
++ boot_menu {
+    left = 30%
+    top = 32%
+    width = 40%
+    height = 40%
+    item_font = "Gruvbox Regular 32"
+    item_color = "#7c6f64"
+    selected_item_font = "Gruvbox Regular 32"
+    selected_item_color = "#a9b665"
+    item_height = 60
+    item_padding = 0
+    item_spacing = 10
+    icon_width = 0
+    icon_height = 0
+    item_icon_space = 0
+    scrollbar = false
+}
+
++ label {
+    top = 80%
+    left = 0
+    width = 100%
+    align = "center"
+    id = "__timeout__"
+    text = "booting in %d s"
+    font = "Gruvbox Regular 32"
+    color = "#504945"
+}
