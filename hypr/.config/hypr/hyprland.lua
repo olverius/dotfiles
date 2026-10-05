@@ -276,10 +276,9 @@ hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("kitty --class cliamp -e clia
 -- Screenshots (grim + slurp)
 hl.bind("Print", hl.dsp.exec_cmd('grim -g "$(slurp)" - | wl-copy')) -- area → clipboard
 hl.bind("SHIFT + Print", hl.dsp.exec_cmd("grim - | wl-copy")) -- full screen → clipboard
-hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd('grim -g "$(slurp)" ~/Pictures/screenshot-$(date +%F_%H-%M-%S).png')) -- area → file
-
+hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd('grim -g "$(slurp)" - | satty --filename -')) -- area → editor
 hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("$HOME/.config/hypr/scripts/next-wallpaper.sh")) -- wallpaper change
-
+hl.bind("CTRL + Print", hl.dsp.exec_cmd('grim -g "$(slurp)" - | satty --filename -')) -- area → editor
 hl.bind(
 	mainMod .. " + SHIFT + V",
 	hl.dsp.exec_cmd("cliphist list | fuzzel --dmenu --prompt 'clipboard › ' | cliphist decode | wl-copy")
@@ -334,4 +333,12 @@ hl.window_rule({
 	float = true,
 	center = true,
 	size = "1000 650",
+})
+-- Satty: screenshot editor pops up floating and centered
+hl.window_rule({
+	name = "float-satty",
+	match = { class = "^com.gabm.satty$" },
+	float = true,
+	center = true,
+	size = "1200 800",
 })

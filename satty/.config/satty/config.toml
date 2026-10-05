@@ -1,0 +1,8 @@
+[general]
+early-exit = true
+initial-tool = "arrow"
+copy-command = "wl-copy"
+output-filename = "~/Pictures/screenshot-%Y-%m-%d_%H-%M-%S.png"
+
+[color-palette]
+palette = ["#ea6962", "#d8a657", "#a9b665", "#7daea3", "#d3869b", "#d4be98"]
