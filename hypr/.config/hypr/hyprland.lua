@@ -334,14 +334,14 @@ hl.window_rule({
 hl.window_rule({
 	name = "ws-browser",
 	match = { class = "^firefox$" },
-	workspace = "2",
+	workspace = "2 silent",
 })
 
 -- Music (cliamp + cava) on workspace 4, tiled side by side
 hl.window_rule({
 	name = "ws-music",
 	match = { class = "^(cliamp|cava)$" },
-	workspace = "4",
+	workspace = "4 silent",
 })
 -- Satty: screenshot editor pops up floating and centered
 hl.window_rule({
