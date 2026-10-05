@@ -108,3 +108,20 @@ tooltip label {
     padding: 0 12px;
     color: #a89984;
 }
+/* Pomodoro */
+#custom-pomo {
+    padding: 0 10px;
+    color: #7c6f64;
+}
+
+#custom-pomo.work {
+    color: #d8a657;
+}
+
+#custom-pomo.break {
+    color: #a9b665;
+}
+
+#custom-pomo.paused {
+    color: #928374;
+}

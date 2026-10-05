@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# pomo — tiny pomodoro timer for waybar
+# Usage: pomo status | toggle | reset | skip
+WORK=$((25*60)); SHORT=$((5*60)); LONG=$((15*60)); ROUNDS=4
+STATE="${XDG_CACHE_HOME:-$HOME/.cache}/pomo.state"
+ICON_WORK="󰔛"; ICON_BREAK="󰅶"; ICON_PAUSE="󰏤"
+
+phase=idle; running=0; end=0; remaining=0; count=0
+[ -f "$STATE" ] && . "$STATE"
+now=$(date +%s)
+
+save() { printf 'phase=%s\nrunning=%s\nend=%s\nremaining=%s\ncount=%s\n' \
+    "$phase" "$running" "$end" "$remaining" "$count" > "$STATE"; }
+
+duration() { case "$1" in work) echo $WORK;; short) echo $SHORT;; long) echo $LONG;; esac; }
+
+start_phase() { phase=$1; running=1; end=$((now + $(duration "$1"))); remaining=0; }
+
+next_phase() {
+    if [ "$phase" = work ]; then
+        count=$((count + 1))
+        if [ $((count % ROUNDS)) -eq 0 ]; then
+            start_phase long;  notify-send "Pomodoro" "Long break — 15 min"
+        else
+            start_phase short; notify-send "Pomodoro" "Break — 5 min"
+        fi
+    else
+        start_phase work; notify-send "Pomodoro" "Focus — 25 min"
+    fi
+}
+
+case "$1" in
+    toggle)
+        if [ "$phase" = idle ]; then start_phase work
+        elif [ "$running" = 1 ]; then remaining=$((end - now)); running=0
+        else end=$((now + remaining)); running=1; fi
+        save; exit 0 ;;
+    reset) rm -f "$STATE"; exit 0 ;;
+    skip)  [ "$phase" != idle ] && next_phase; save; exit 0 ;;
+esac
+
+# status (called by waybar every second)
+if [ "$phase" = idle ]; then
+    printf '{"text":"%s","class":"idle","tooltip":"Pomodoro — click to start"}\n' "$ICON_WORK"
+    exit 0
+fi
+
+if [ "$running" = 1 ]; then
+    left=$((end - now))
+    if [ "$left" -le 0 ]; then next_phase; save; left=$((end - now)); fi
+else
+    left=$remaining
+fi
+
+mm=$((left / 60)); ss=$((left % 60))
+if [ "$running" = 0 ]; then icon=$ICON_PAUSE; class=paused
+elif [ "$phase" = work ]; then icon=$ICON_WORK; class=work
+else icon=$ICON_BREAK; class=break; fi
+
+printf '{"text":"%s  %02d:%02d","class":"%s","tooltip":"%s · %d done\\nclick: pause/resume · right: skip · middle: reset"}\n' \
+    "$icon" "$mm" "$ss" "$class" "$phase" "$count"
