@@ -33,3 +33,13 @@ cmatrix() {
   command cmatrix "$@"
   printf '\e]4;0;#3c3836\a'
 }
+# yazi: "y" opens it, and quitting with q cd's into the folder you were in
+y() {
+  local tmp
+  tmp="$(mktemp -t yazi-cwd.XXXXXX)"
+  yazi "$@" --cwd-file="$tmp"
+  if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    builtin cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
+}
