@@ -166,7 +166,7 @@ hl.config({
 
 hl.config({
 	master = {
-		new_status = "master",
+		new_status = "slave",
 	},
 })
 
@@ -370,6 +370,8 @@ hl.window_rule({
 	match = { class = "^(cliamp|cava|clock)$" },
 	workspace = "4 silent",
 })
+-- Workspace 4: cliamp big on the left, cava + clock stacked on the right   ← add this
+hl.workspace_rule({ workspace = "4", layout = "master" })
 -- Dropdown terminal: floating at the top, lives in a hidden workspace
 hl.window_rule({
 	name = "dropdown-terminal",
