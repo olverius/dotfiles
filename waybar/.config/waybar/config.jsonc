@@ -8,7 +8,7 @@
     "margin-right": 8,
     "spacing": 4,
 
-    "modules-left": ["hyprland/workspaces", "custom/media"],
+    "modules-left": ["hyprland/workspaces", "custom/media", "custom/media-next"],
     "modules-center": ["clock", "custom/pomo"],
     "modules-right": ["tray","backlight", "backlight/slider", "pulseaudio", "battery"],
 
@@ -24,6 +24,12 @@
         "on-click-right": "playerctl next",
         "on-scroll-up": "playerctl next",
         "on-scroll-down": "playerctl previous"
+    },
+    "custom/media-next": {
+        "exec": "playerctl status >/dev/null 2>&1 && echo '󰒭'",
+        "interval": 2,
+        "tooltip": false,
+        "on-click": "playerctl next"
     },
 
     "clock": {

@@ -125,3 +125,11 @@ tooltip label {
 #custom-pomo.paused {
     color: #928374;
 }
+#custom-media-next {
+    padding: 0 10px 0 0;
+    color: #a9b665;
+}
+
+#custom-media-next:hover {
+    color: #d4be98;
+}
