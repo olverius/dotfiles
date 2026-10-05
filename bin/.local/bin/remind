@@ -61,7 +61,10 @@ fi
 
 target=$((now + secs))
 unit="remind-$target-$RANDOM"
-systemd-run --user --quiet --unit="$unit" --on-active="${secs}s" --timer-property=AccuracySec=1s \
+# --on-calendar uses the real clock, so a reminder that was due while the laptop slept
+# still fires right after it wakes up (a plain countdown would pause during sleep)
+systemd-run --user --quiet --unit="$unit" --on-calendar="$(date -d "@$target" '+%Y-%m-%d %H:%M:%S')" \
+    --timer-property=AccuracySec=1s --timer-property=Persistent=true \
     /bin/sh -c 'notify-send -u critical -t 60000 -a Reminder "󰂞  Reminder" "$1"; pw-play "$2" 2>/dev/null || paplay "$2" 2>/dev/null' \
     remind "$msg" "$SOUND"
 echo "$target|$unit|$msg" >> "$LIST"
