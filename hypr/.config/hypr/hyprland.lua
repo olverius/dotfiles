@@ -67,8 +67,9 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("$HOME/.local/bin/refresh-auto")
 	hl.exec_cmd(terminal, { workspace = "1" })
 	hl.exec_cmd(browser, { workspace = "2" })
-	hl.exec_cmd("kitty --class cliamp -e cliamp", { workspace = "4" })
-	hl.exec_cmd("kitty --class cava -e cava", { workspace = "4" })
+	hl.exec_cmd(
+		"kitty --class cliamp -e cliamp & sleep 0.6; kitty --class cava -e cava & sleep 0.6; kitty --class clock -e tty-clock -c -s -C 3"
+	)
 	hl.exec_cmd("kitty --class dropdown")
 end)
 
@@ -159,6 +160,7 @@ hl.animation({ leaf = "specialWorkspace", enabled = true, speed = 3, bezier = "e
 hl.config({
 	dwindle = {
 		preserve_split = true,
+		force_split = 2, -- new windows always open right / below
 	},
 })
 
@@ -365,7 +367,7 @@ hl.window_rule({
 -- Music (cliamp + cava) on workspace 4, tiled side by side
 hl.window_rule({
 	name = "ws-music",
-	match = { class = "^(cliamp|cava)$" },
+	match = { class = "^(cliamp|cava|clock)$" },
 	workspace = "4 silent",
 })
 -- Dropdown terminal: floating at the top, lives in a hidden workspace
