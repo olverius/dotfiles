@@ -21,3 +21,5 @@ border-color=#504945
 [urgency=critical]
 border-color=#ea6962
 default-timeout=0
+[app-name=Thunderbird]
+invisible=1
