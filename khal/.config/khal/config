@@ -21,6 +21,10 @@ type = calendar
 path = /home/olverius/.local/share/calendars/planday
 type = calendar
 
+[[itslearning]]
+path = /home/olverius/.local/share/calendars/itslearning
+type = calendar
+
 [[wysylajmicossgmailcom]]
 path = /home/olverius/.local/share/calendars/wysylajmicoss@gmail.com
 type = calendar
