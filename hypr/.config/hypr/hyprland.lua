@@ -67,9 +67,7 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("$HOME/.local/bin/refresh-auto")
 	hl.exec_cmd(terminal, { workspace = "1" })
 	hl.exec_cmd(browser, { workspace = "2" })
-	hl.exec_cmd(
-		"kitty --class cliamp -e cliamp & sleep 0.6; kitty --class cava -e cava & sleep 0.6; kitty --class clock -e tty-clock -c -s -C 3"
-	)
+	hl.exec_cmd("$HOME/.local/bin/music-ws")
 	hl.exec_cmd("kitty --class dropdown")
 end)
 
