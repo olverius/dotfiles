@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=MATLAB R2026b
+Comment=MATLAB numerical computing environment
+Exec=/home/olverius/.local/bin/matlab -desktop
+Icon=/home/olverius/.local/share/icons/matlab.png
+Terminal=false
+Categories=Development;Education;Science;Math;
