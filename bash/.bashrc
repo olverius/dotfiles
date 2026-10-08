@@ -43,3 +43,5 @@ y() {
   fi
   rm -f -- "$tmp"
 }
+
+export PATH="$HOME/.config/composer/vendor/bin:$PATH"
