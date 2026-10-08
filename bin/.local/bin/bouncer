@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# bouncer — ASCII bodyguard for hyprlock. Arms crossed; shakes his head after a wrong password.
+# Called by a hyprlock label:  text = cmd[update:120] $HOME/.local/bin/bouncer $ATTEMPTS
+# hyprlock replaces $ATTEMPTS with the number of failed attempts.
+
+n=${1:-0}; [[ $n =~ ^[0-9]+$ ]] || n=0
+state="${XDG_RUNTIME_DIR:-/tmp}/bouncer.state"
+now=$(( $(date +%s%N) / 1000000 ))           # milliseconds
+
+read -r last t 2>/dev/null < "$state" || { last=0; t=0; }
+(( n > last )) && t=$now                      # a new failed attempt just happened
+(( n != last )) && echo "$n $t" > "$state"
+
+SHAKE_MS=1400                                 # how long he shakes his head
+STEP_MS=140                                   # time per head turn
+elapsed=$(( now - t ))
+
+if (( n > 0 && elapsed < SHAKE_MS )); then
+    if (( (elapsed / STEP_MS) % 2 )); then eyes="  ##-##"; else eyes="##-##  "; fi
+    mouth="  ___  "
+    caption='<span foreground="#ea6962">      nope.      </span>'
+else
+    eyes=" ##-## "
+    mouth="   -   "
+    caption="                 "
+fi
+
+# first line starts with non-breaking spaces: hyprlock trims normal leading spaces
+cat << ART
+     .-------.   
+    /         \\  
+    | $eyes |  
+    | $mouth |  
+    \\_________/  
+    ___|   |___  
+   /   '---'   \\ 
+  |  _________  |
+  | (=========) |
+  |  \\_______/  |
+  |   |     |   |
+$caption
+ART
