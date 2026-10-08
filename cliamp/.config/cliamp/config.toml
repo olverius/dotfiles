@@ -13,6 +13,8 @@ eq = [   0,  -4,  -3,  -1,  0,  2,  0,   1,   1,   0]
 # which avoids the Development Mode search block.
 # To use your own app instead, add: client_id = "..."
 # (redirect URI in the dashboard must be http://127.0.0.1:19872/login)
+theme = "gruvbox"
+visualizer = "Retro"
 [spotify]
 client_id = 6cb3f54ba80943e1a42f34af72f523e3
 bitrate = 320
