@@ -220,6 +220,10 @@ hl.gesture({
 
 local mainMod = "SUPER"
 
+-- Power menu: power button or Super+Escape
+hl.bind("XF86PowerOff", hl.dsp.exec_cmd("$HOME/.local/bin/power-menu"))
+hl.bind(mainMod .. " + Escape", hl.dsp.exec_cmd("$HOME/.local/bin/power-menu"))
+
 -- Apps
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
