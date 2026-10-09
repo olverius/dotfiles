@@ -65,8 +65,8 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("wl-paste --type image --watch cliphist store")
 	hl.exec_cmd("swayosd-server")
 	hl.exec_cmd("$HOME/.local/bin/refresh-auto")
-	hl.exec_cmd(terminal, { workspace = "1" })
-	hl.exec_cmd(browser, { workspace = "2" })
+	hl.exec_cmd(terminal, { workspace = "3 silent" })
+	hl.exec_cmd(browser, { workspace = "2 silent" })
 	hl.exec_cmd("$HOME/.local/bin/music-ws")
 	hl.exec_cmd("kitty --class dropdown")
 end)
@@ -392,10 +392,10 @@ hl.window_rule({
 hl.window_rule({
 	name = "ws-music",
 	match = { class = "^(cliamp|cava|clock)$" },
-	workspace = "4 silent",
+	workspace = "1 silent",
 })
 -- Workspace 4: cliamp big on the left, cava + clock stacked on the right   ← add this
-hl.workspace_rule({ workspace = "4", layout = "master" })
+hl.workspace_rule({ workspace = "1", layout = "master" })
 -- Dropdown terminal: floating at the top, lives in a hidden workspace
 hl.window_rule({
 	name = "dropdown-terminal",
