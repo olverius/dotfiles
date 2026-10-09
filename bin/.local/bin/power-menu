@@ -1,19 +1,11 @@
 #!/usr/bin/env bash
-# power-menu — lock / suspend / log out / reboot / shut down, picked in fuzzel.
-# Bound to the power button and Super+Escape in hyprland.lua.
+# Pick a power profile from a small fuzzel menu
+current=$(powerprofilesctl get)
 
-choice=$(printf '%s\n' \
-    "󰌾  Lock" \
-    "󰤄  Suspend" \
-    "󰍃  Log out" \
-    "󰜉  Reboot" \
-    "󰐥  Shut down" \
-  | fuzzel --dmenu --prompt "power › " --lines 5 --width 22)
+choice=$(printf "power-saver\nbalanced\nperformance" \
+    | fuzzel --dmenu --prompt "power ($current) › " --lines 3 --width 30)
 
-case "$choice" in
-    *Lock)      hyprlock ;;
-    *Suspend)   systemctl suspend ;;
-    *"Log out") hyprctl dispatch 'hl.dsp.exit()' ;;
-    *Reboot)    systemctl reboot ;;
-    *"Shut down") systemctl poweroff ;;
-esac
+if [ -n "$choice" ]; then
+    powerprofilesctl set "$choice"
+    notify-send "Power profile" "$choice"
+fi
