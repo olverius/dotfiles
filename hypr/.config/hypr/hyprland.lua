@@ -66,7 +66,7 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("swayosd-server")
 	hl.exec_cmd("$HOME/.local/bin/refresh-auto")
 	hl.exec_cmd(terminal, { workspace = "3 silent" })
-	hl.exec_cmd(browser, { workspace = "2 silent" })
+	hl.exec_cmd(browser, { workspace = "2 silent" }) -- preloaded at login, so Super+B is instant
 	hl.exec_cmd("$HOME/.local/bin/music-ws")
 	hl.exec_cmd("kitty --class dropdown")
 end)
@@ -228,7 +228,15 @@ hl.bind(mainMod .. " + Escape", hl.dsp.exec_cmd("$HOME/.local/bin/system-menu"))
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
-hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
+-- Browser: if Firefox is already running (it's preloaded at login), just jump to workspace 2
+-- instead of asking it for a new window (which the ws-browser rule would hide on ws 2 anyway).
+-- Only cold-starts Firefox if it isn't running.
+hl.bind(
+	mainMod .. " + B",
+	hl.dsp.exec_cmd("pgrep -x " .. browser .. " >/dev/null && hyprctl dispatch 'hl.dsp.focus({ workspace = 2 })' || " .. browser)
+)
+-- New Firefox window on demand (the old Super+B behaviour)
+hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd(browser .. " --new-window"))
 hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd("spotify-launcher"))
 
 -- Windows
