@@ -34,8 +34,19 @@ end
 hl.monitor({
 	output = "eDP-1",
 	mode = on_ac() and "2880x1800@90" or "2880x1800@60",
-	position = "auto",
-	scale = "auto",
+	position = "0x0",
+	scale = "2",
+})
+
+-- Acer VG270U P (main monitor, right of the laptop)
+-- Matched by description so it works on HDMI or USB-C/DP
+-- HDMI on this laptop maxes out at 60 Hz for 1440p; switch to "2560x1440@144" on DisplayPort
+
+hl.monitor({
+	output = "HDMI-A-1",
+	mode = "2560x1440@120",
+	position = "1440x0",
+	scale = 1,
 })
 
 ---------------------
@@ -233,7 +244,9 @@ hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
 -- Only cold-starts Firefox if it isn't running.
 hl.bind(
 	mainMod .. " + B",
-	hl.dsp.exec_cmd("pgrep -x " .. browser .. " >/dev/null && hyprctl dispatch 'hl.dsp.focus({ workspace = 2 })' || " .. browser)
+	hl.dsp.exec_cmd(
+		"pgrep -x " .. browser .. " >/dev/null && hyprctl dispatch 'hl.dsp.focus({ workspace = 2 })' || " .. browser
+	)
 )
 -- New Firefox window on demand (the old Super+B behaviour)
 hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd(browser .. " --new-window"))
@@ -430,3 +443,10 @@ hl.window_rule({
 	center = true,
 	size = "1100 700",
 })
+
+-- Workspace 1 on the laptop, 2–10 on the Acer.
+-- When the Acer is unplugged, 2–10 fall back to the laptop.
+hl.workspace_rule({ workspace = "1", monitor = "eDP-1", default = true })
+for i = 2, 10 do
+	hl.workspace_rule({ workspace = tostring(i), monitor = "HDMI-A-1", default = (i == 2) })
+end
