@@ -31,16 +31,16 @@ local function on_ac()
 	return v == "1"
 end
 
+-- Laptop: pinned to 0x0, scale 2 -> 1440x900 logical (must NOT be "auto", or it overlaps the Acer)
 hl.monitor({
 	output = "eDP-1",
 	mode = on_ac() and "2880x1800@90" or "2880x1800@60",
 	position = "0x0",
-	scale = "2",
+	scale = 2,
 })
 
 -- Acer VG270U P (main monitor, right of the laptop)
--- Matched by description so it works on HDMI or USB-C/DP
--- HDMI on this laptop maxes out at 60 Hz for 1440p; switch to "2560x1440@144" on DisplayPort
+-- HDMI on this laptop tops out at 120 Hz for 1440p; use "2560x1440@144" over DisplayPort
 
 hl.monitor({
 	output = "HDMI-A-1",
@@ -77,7 +77,8 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("swayosd-server")
 	hl.exec_cmd("$HOME/.local/bin/refresh-auto")
 	hl.exec_cmd(terminal, { workspace = "3 silent" })
-	hl.exec_cmd(browser, { workspace = "2 silent" }) -- preloaded at login, so Super+B is instant
+	-- Startup Firefox only goes to workspace 2; later windows open wherever you are
+	hl.exec_cmd(browser, { workspace = "2 silent" })
 	hl.exec_cmd("$HOME/.local/bin/music-ws")
 	hl.exec_cmd("kitty --class dropdown")
 end)
@@ -239,17 +240,7 @@ hl.bind(mainMod .. " + Escape", hl.dsp.exec_cmd("$HOME/.local/bin/system-menu"))
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
--- Browser: if Firefox is already running (it's preloaded at login), just jump to workspace 2
--- instead of asking it for a new window (which the ws-browser rule would hide on ws 2 anyway).
--- Only cold-starts Firefox if it isn't running.
-hl.bind(
-	mainMod .. " + B",
-	hl.dsp.exec_cmd(
-		"pgrep -x " .. browser .. " >/dev/null && hyprctl dispatch 'hl.dsp.focus({ workspace = 2 })' || " .. browser
-	)
-)
--- New Firefox window on demand (the old Super+B behaviour)
-hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd(browser .. " --new-window"))
+hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser .. " --new-window")) -- new Firefox window on this workspace
 hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd("spotify-launcher"))
 
 -- Windows
@@ -400,13 +391,6 @@ hl.window_rule({
 	float = true,
 	center = true,
 	size = "900 600",
-})
-
--- Browser always on workspace 2
-hl.window_rule({
-	name = "ws-browser",
-	match = { class = "^firefox$" },
-	workspace = "2 silent",
 })
 
 -- Music (cliamp + cava) on workspace 4, tiled side by side
