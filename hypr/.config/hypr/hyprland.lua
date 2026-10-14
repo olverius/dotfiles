@@ -431,6 +431,7 @@ hl.window_rule({
 -- Workspace 1 on the laptop, 2–10 on the Acer.
 -- When the Acer is unplugged, 2–10 fall back to the laptop.
 hl.workspace_rule({ workspace = "1", monitor = "eDP-1", default = true })
-for i = 2, 10 do
+hl.workspace_rule({ workspace = "2", monitor = "eDP-1", default = true })
+for i = 3, 10 do
 	hl.workspace_rule({ workspace = tostring(i), monitor = "HDMI-A-1", default = (i == 2) })
 end
